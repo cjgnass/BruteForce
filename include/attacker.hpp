@@ -3,6 +3,8 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <cmath>
+#include <cstdint>
 
 uint64_t makeBaseTen(const std::vector<int> &v, int base);
 
