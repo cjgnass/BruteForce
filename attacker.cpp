@@ -10,10 +10,20 @@ uint64_t makeBaseTen(const std::vector<int> &v, int base) {
   return output;
 }
 
+std::vector<int> makeBaseN(uint64_t num, int base) { 
+  std::vector<int> output{};
+  while (num > 0) { 
+    output.push_back(num % base);
+    num /= base;
+  }
+  std::reverse(output.begin(), output.end());
+  return output;
+}
+
 std::string numToString(const std::vector<int> &input) { 
   char* output = new char[input.size() + 1];
   int idx = 0;
-  std::for_each(input.begin(), input.end(), 
+  std::for_each(input.cbegin(), input.cend(), 
       [&output, &idx](int x){ 
         output[idx] = 'a' + x; 
         idx++;

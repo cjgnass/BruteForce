@@ -28,7 +28,7 @@ TEST(MakeBaseTen, Test2) {
 }
 
 TEST(MakeBaseTen, Test3) {
-  int o = makeBaseTen(std::vector<int>{7, 0, 11, 0, 0, 33}, 26);
+  int o = makeBaseTen(std::vector<int>{7, 0, 11, 0, 1, 7}, 26);
   int t = 83363001;
   EXPECT_EQ(o, t);
 }
@@ -59,3 +59,33 @@ TEST(AdderAndMakeBaseTen, Test1) {
   uint32_t t = makeBaseTen(truthSum , 26);
   EXPECT_EQ(o, t);
 }
+
+TEST(MakeBaseN, Test1) {
+  std::vector<int> o = makeBaseN(3, 2);
+  std::vector<int> t {1, 1};
+  EXPECT_EQ(o, t);
+}
+
+TEST(MakeBaseN, Test2) {
+  std::vector<int> o = makeBaseN(10, 2);
+  std::vector<int> t {1, 0, 1, 0};
+  EXPECT_EQ(o, t);
+}
+
+TEST(MakeBaseN, Test3) {
+  std::vector<int> o = makeBaseN(27, 2);
+  std::vector<int> t {1, 1, 0, 1, 1};
+  EXPECT_EQ(o, t);
+}
+
+TEST(MakeBaseN, Test4) {
+  std::vector<int> o = makeBaseN(83363001, 26);
+  std::vector<int> t {7, 0, 11, 0, 1, 7};
+  EXPECT_EQ(o, t);
+}
+
+TEST(MakeBaseN, Test5) { 
+  std::vector<int> o = makeBaseN(49, 26);
+  std::vector<int> t {1, 23};
+  EXPECT_EQ(o, t);
+} 
