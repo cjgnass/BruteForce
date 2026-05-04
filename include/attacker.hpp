@@ -5,10 +5,11 @@
 #include <iostream>
 #include <cmath>
 #include <cstdint>
+#include <thread>
 
 uint64_t makeBaseTen(const std::vector<int> &v, int base);
 
-std::vector<int> adder(std::vector<int> input1, std::vector<int> input2, int base);
+std::vector<int> adder(const std::vector<int> &input1, const std::vector<int> &input2, int base);
 
 std::string numToString(const std::vector<int> &input);
 

@@ -11,54 +11,55 @@ uint64_t makeBaseTen(const std::vector<int> &v, int base) {
 }
 
 std::string numToString(const std::vector<int> &input) { 
-  std::string output{};
+  char* output = new char[input.size() + 1];
+  int idx = 0;
   std::for_each(input.begin(), input.end(), 
-      [&output](int x){ 
-        output += 'a' + x; 
+      [&output, &idx](int x){ 
+        output[idx] = 'a' + x; 
+        idx++;
       });
   return output;
 }
 
-std::vector<int> adder(std::vector<int> input1, std::vector<int> input2, int base) { 
-  auto invalid1 = std::find_if(input1.begin(), input1.end(), [&base](int x) { 
-    return x >= base;
-  });
-  auto invalid2 = std::find_if(input2.begin(), input2.end(), [&base](int x) { 
-    return x >= base;
-  });
-  if (invalid1 != input1.end() || invalid2 != input2.end()) { 
-    std::cerr << "Invalid input or base";
-    return {};
-  }
-  std::reverse(input1.begin(), input1.end());
-  std::reverse(input2.begin(), input2.end());
-  std::vector<int> output{};
+std::vector<int> adder(const std::vector<int> &input1, const std::vector<int> &input2, int base) { 
+  // auto invalid1 = std::find_if(input1.begin(), input1.end(), [&base](int x) { 
+  //   return x >= base;
+  // });
+  // auto invalid2 = std::find_if(input2.begin(), input2.end(), [&base](int x) { 
+  //   return x >= base;
+  // });
+  // if (invalid1 != input1.end() || invalid2 != input2.end()) { 
+  //   std::cerr << "Invalid input or base";
+  //   return {};
+  // }
+  std::vector<int> output(std::max(input1.size(), input2.size()));
 
   int carry = 0;
-  int idx = 0;  
-  int minSize = std::min(input1.size(), input2.size());
+  int idx = output.size() - 1;
+  int idx1 = input1.size() - 1;  
+  int idx2 = input2.size() - 1;  
 
-  for(;idx < minSize; idx++) { 
-    int sum = input1[idx] + input2[idx] + carry;
+  for(;idx1 >= 0 && idx2 >= 0; idx1--, idx2--, idx--) { 
+    int sum = input1[idx1] + input2[idx2] + carry;
     carry = sum / base;
-    output.push_back(sum % base);
+    output[idx] = sum % base;
   }
   
-  for(;idx < input1.size(); idx++) { 
-    int sum = input1[idx] + carry;
+  for(;idx1 >= 0; idx1--, idx--) { 
+    int sum = input1[idx1] + carry;
     carry = sum / base;
-    output.push_back(sum % base);
+    output[idx] = sum % base;
   }
-  for(;idx < input2.size(); idx++) { 
-    int sum = input2[idx] + carry;
+  for(;idx2 >= 0; idx2--, idx--) { 
+    int sum = input2[idx2] + carry;
     carry = sum / base;
-    output.push_back(sum % base);
+    output[idx] = sum % base;
   }
-  if (carry > 0) { 
-    output.push_back(carry);
+  
+  if (carry > 0) {
+    output.insert(output.begin(), carry);
   }
-
-  std::reverse(output.begin(), output.end());
+  
   return output;
 }
 
