@@ -73,21 +73,41 @@ std::vector<int> adder(const std::vector<int> &input1, const std::vector<int> &i
   return output;
 }
 
-std::string bruteForce(std::string target) {
-  uint64_t n = std::pow(26, target.size()) - 1;
-  std::vector<int> v(target.size());
-  if (numToString(v)==target) { 
-    return numToString(v);
-  }
+void bruteForceWork(std::string &output, const std::string &target, uint64_t start, uint64_t stop) { 
+  std::vector<int> v = makeBaseN(start, 26);
   std::vector<int> numToAdd(target.size());
   numToAdd[target.size()-1] = 1;
-  while (n > 0) { 
-    v = adder(v, numToAdd, 26);
+  while (start < stop) { 
     // std::cout << numToString(v) << '\n';
     if (numToString(v)==target) { 
-      return numToString(v);
+      output = numToString(v);
+      return;
     }
-    n--;
+    v = adder(v, numToAdd, 26);
+    start++;
+  }
+}
+
+std::string bruteForce(const std::string &target) {
+  uint64_t n = std::pow(26, target.size());
+  std::vector<int> v(target.size());
+
+  std::vector<std::thread> threads{};
+  int numOfThreads = std::thread::hardware_concurrency();
+  uint64_t chunkSize = n / numOfThreads;
+  std::string output{};
+  for (int i = 0; i < numOfThreads; i++) { 
+    threads.emplace_back(bruteForceWork, std::ref(output), std::cref(target), static_cast<uint64_t>(i) * chunkSize, static_cast<uint64_t>(i) * chunkSize + chunkSize);
+  }
+
+  for (auto &t : threads) { 
+    t.join();
+  }
+
+
+
+  if (output != "") { 
+    return output;
   }
   std::cerr << "Target not found"; 
   return "";

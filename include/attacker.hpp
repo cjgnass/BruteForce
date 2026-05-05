@@ -15,5 +15,6 @@ std::vector<int> adder(const std::vector<int> &input1, const std::vector<int> &i
 
 std::string numToString(const std::vector<int> &input);
 
-std::string bruteForce(std::string target);
+void bruteForceWork(std::string &output, const std::string &target, uint64_t start, uint64_t stop);
+std::string bruteForce(const std::string &target);
 
