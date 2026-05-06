@@ -9,6 +9,10 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 add_executable(main main.cpp attacker.cpp)
+target_compile_options(main PRIVATE
+    -Wall -Wextra -Wpedantic
+    -fsanitize=undefined
+)
 target_include_directories(main PRIVATE include)
 
 add_executable(tests tests.cpp attacker.cpp)
